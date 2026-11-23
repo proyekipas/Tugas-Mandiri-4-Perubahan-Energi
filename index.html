@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TM 4 - Perubahan Energi: Petualangan Si Energi</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;max-width:100%;overflow-x:hidden}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.5;padding-bottom:40px}
+header{background:linear-gradient(135deg,#f97316,#db2777 55%,#7c3aed);padding:14px 14px 10px;position:sticky;top:0;z-index:5;color:#fff}
+header h1{margin:0;font-size:17px}.sub{font-size:12px;opacity:.9}
+.barw{height:8px;background:rgba(255,255,255,.3);border-radius:9px;margin-top:8px;overflow:hidden}.barw i{display:block;height:100%;width:0;background:#fde047;transition:width .3s}
+#pg{font-size:12px;margin-top:4px;font-weight:700}
+main{padding:12px;max-width:720px;margin:0 auto}.pg{display:none}.pg.on{display:block}
+.card{background:#1e293b;border-radius:16px;padding:14px;margin-bottom:12px;border-left:6px solid #94a3b8;word-wrap:break-word}
+.card h3{margin:0 0 6px;font-size:16px;color:#fff}.card p,.card li{font-size:14.5px;margin:4px 0}.card ul{padding-left:20px;margin:4px 0}
+.mek{border-color:#3b82f6}.kim{border-color:#22c55e}.lis{border-color:#facc15}.kal{border-color:#ef4444}.inf{border-color:#a78bfa}
+.chain{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin:8px 0;font-size:12px;font-weight:700}
+.chain b{padding:6px 8px;border-radius:9px;color:#0f172a}.chain span{color:#fb923c;font-size:16px}
+.cm{background:#bfdbfe}.ck{background:#bbf7d0}.cl{background:#fef08a}.cr{background:#fecaca}.cg{background:#e2e8f0}
+label.l{display:block;font-weight:700;font-size:14px;margin:10px 0 4px}
+input,select,textarea{width:100%;max-width:100%;font:inherit;font-size:16px;padding:10px;border-radius:10px;border:2px solid #475569;background:#0f172a;color:#fff}
+textarea{resize:none;overflow:hidden;min-height:44px}
+.err{border-color:#f43f5e!important;background:#3b0d1a!important}.em{color:#fda4af;font-size:13px;margin-top:3px;display:none}.em.s{display:block}
+.q{background:#1e293b;border-radius:14px;padding:12px;margin-bottom:10px;border:2px solid transparent}
+.q.ok{border-color:#22c55e}.q.bad{border-color:#f43f5e}.q p{margin:0 0 6px;font-weight:600;font-size:14.5px}
+.q label{display:block;padding:9px;margin:4px 0;border-radius:9px;background:#0f172a;font-size:14px}
+.hint{color:#fda4af;font-size:13px;margin-top:4px}
+button{font:inherit;font-weight:700;min-height:46px;padding:0 16px;border-radius:12px;border:0;cursor:pointer;color:#fff;background:#7c3aed}
+button:disabled{background:#475569;color:#cbd5e1}.b2{background:#475569}.bred{background:#dc2626}.bgrn{background:#16a34a}.bor{background:#f97316}
+nav{display:flex;gap:10px;max-width:720px;margin:0 auto;padding:0 12px}nav button{flex:1}
+#msg{max-width:720px;margin:8px auto;padding:0 12px;color:#fda4af;font-size:14px;font-weight:600}
+#resetBox{max-width:720px;margin:14px auto;padding:0 12px}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#fde047;color:#0f172a;padding:10px 16px;border-radius:12px;font-weight:700;font-size:14px;display:none;z-index:9;max-width:90%}
+.rv h4{margin:12px 0 4px;color:#fde047}.ans{background:#0f172a;border-radius:8px;padding:8px;white-space:pre-wrap;word-wrap:break-word;font-size:14px;margin-bottom:6px}
+.kv{font-size:14px}.kv b{color:#fde047}.score{font-size:30px;font-weight:800;color:#fde047}
+.ck2{font-size:14px;margin:3px 0}.pimg{width:100%;height:auto;border-radius:10px;background:#fff;display:block;margin:8px 0}ol.stp{padding-left:20px;margin:6px 0;font-size:14px}ol.stp li{margin:4px 0}.ins{font-size:13.5px;color:#fde68a;margin:0 0 5px}.hd{margin:18px 0 4px;color:#fb923c;font-size:16px}
+@media print{body{background:#fff;color:#000}header,nav,#resetBox,#msg,#toast,.noprint{display:none!important}.pg{display:none!important}#p8{display:block!important}
+.card,.q{background:#fff;border:1px solid #999;color:#000}.ans{background:#f3f4f6;color:#000}.rv h4,.kv b,.score{color:#000}main{padding:0}.pimg{width:auto;max-width:100%;max-height:235mm;margin:6px auto;border-radius:0;break-inside:avoid;page-break-inside:avoid}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head><body>
+<header><h1>TM 4 • Petualangan Si Energi</h1><div class="sub">Proyek IPAS • Perubahan Energi • Kelas X</div>
+<div class="barw"><i id="bar"></i></div><div id="pg"></div></header>
+<main id="main"></main>
+<div id="msg" class="noprint"></div>
+<nav class="noprint"><button id="bPrev" class="b2">‹ Kembali</button><button id="bNext" class="bor">Lanjut ›</button></nav>
+<div id="resetBox"></div><div id="toast"></div>
+<script>
+(function(){
+var KEY='TM4_PERUBAHAN_ENERGI_V1',TOTAL=9,isResetting=false,dirty=false,printing=false,saveT=null,minT=null;
+function fresh(){return{nama:'',kelas:'',absen:'',page:0,att:0,locked:{},ans:{},wrong:{},tabs:0,tm:{},img:'',imgName:''}}
+var S=fresh();
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function $(i){return document.getElementById(i)}
+function load(){try{var r=localStorage.getItem(KEY);if(r){S=Object.assign(fresh(),JSON.parse(r))}}catch(e){}}
+function saveNow(){if(isResetting||!dirty)return;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){try{localStorage.setItem(KEY,JSON.stringify(Object.assign({},S,{img:''})))}catch(e2){}}}
+function saveDeb(){if(isResetting)return;dirty=true;clearTimeout(saveT);saveT=setTimeout(saveNow,300)}
+function touch(){isResetting=false;dirty=true}
+var tt=null;function toast(t){var e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(tt);tt=setTimeout(function(){e.style.display='none'},2600)}
+
+var MATERI=[
+[['Energi Mekanik (Energi Gerak)','mek','<p>Energi benda yang <b>bergerak</b> atau berada di <b>tempat tinggi</b>.</p><ul><li>Ciri: benda bergerak, berputar, bergetar.</li><li>Contoh: motor melaju, baling-baling kipas, ombak Losari, kelapa jatuh.</li></ul><p><b>Tes cepat:</b> apakah ada yang bergerak?</p>'],
+['Energi Kimia (Energi Simpanan)','kim','<p>Energi yang <b>tersimpan di dalam bahan</b>. Keluar lewat reaksi kimia, misalnya terbakar atau dicerna.</p><ul><li>Ciri: ada pada bahan bakar, makanan, baterai; bahannya berkurang saat dipakai.</li><li>Contoh: gas LPG, bensin, nasi kuning, jalangkote, baterai HP.</li></ul><p><b>Tes cepat:</b> apakah ini bahan simpanan yang berkurang saat dipakai?</p>']],
+[['Energi Listrik','lis','<p>Energi dari muatan listrik yang <b>mengalir</b> lewat kabel.</p><ul><li>Ciri: ada kabel, colokan, atau baterai; tidak terlihat, hanya terlihat akibatnya.</li><li>Contoh: listrik PLN, listrik baterai, genset, panel surya.</li></ul><p>Awas: jangan sentuh kabel terkelupas atau memegang colokan dengan tangan basah.</p>'],
+['Energi Kalor (Energi Panas)','kal','<p>Energi panas. Suhu benda naik, terasa hangat atau panas.</p><ul><li>Contoh: api kompor, setrika, terik matahari, teh panas, telapak tangan yang digosok.</li></ul><p><b>Tes cepat:</b> apakah suhunya naik?</p>'],
+['Energi Lain yang Ikut Muncul','inf','<p>Selain empat bentuk tadi ada <b>cahaya</b> dan <b>bunyi</b>. Cukup kamu sebut sebagai "energi lain".</p>']],
+[['Energi Tidak Hilang, Hanya Berubah','inf','<p>Energi tidak bisa diciptakan dan tidak bisa dimusnahkan. Seperti uang jajan: dibelanjakan di kantin, uangnya tidak lenyap tetapi <b>pindah</b> ke penjual.</p><p>Kata "energi habis" artinya energi sudah <b>berubah</b> jadi bentuk lain yang tidak bisa dipakai lagi, misalnya panas yang menyebar ke udara.</p>'],
+['Tiga Langkah Detektif Energi','mek','<ul><li><b>1. Energi awal:</b> apa sumbernya? (bensin, listrik, makanan)</li><li><b>2. Alat/proses pengubah:</b> apa yang bekerja? (mesin, motor listrik, elemen pemanas, otot)</li><li><b>3. Energi akhir:</b> apa hasil yang dimanfaatkan?</li><li><b>4. Bonus:</b> adakah panas, bunyi, atau cahaya yang ikut muncul?</li></ul><div class="chain"><b class="cl">Listrik (colokan)</b><span>→</span><b class="cm">Mekanik (jarum jahit)</b></div><p>Panah = motor listrik mesin jahit. Ikut muncul: kalor dan bunyi.</p>']],
+[['Rantai Perubahan Energi','kim','<p>Energi bisa berubah <b>beberapa kali</b>, seperti lari estafet. Urutannya disebut rantai perubahan energi. Tulis nama alat di tiap panah.</p><p><b>Senter:</b></p><div class="chain"><b class="ck">Kimia (baterai)</b><span>→</span><b class="cl">Listrik</b><span>→</span><b class="cg">Cahaya</b></div>'],
+['Dari Batu Bara sampai Kipas di Kelas','lis','<div class="chain"><b class="ck">Kimia (batu bara)</b><span>→</span><b class="cr">Kalor (uap)</b><span>→</span><b class="cm">Mekanik (turbin)</b><span>→</span><b class="cl">Listrik (generator)</b><span>→</span><b class="cm">Mekanik (kipas)</b></div><p>Satu bentuk energi boleh muncul lebih dari sekali dalam rantai. Di setiap tahap, kalor bisa ikut muncul.</p>']],
+[['Kalor Sampingan: Tamu yang Selalu Ikut','kal','<p>Kalor yang muncul tetapi <b>bukan tujuan</b> alat disebut <b>hasil sampingan</b> (energi terbuang). Seperti air tumpah saat menuang dari teko: tidak hilang, hanya tidak masuk gelas.</p><ul><li>Bohlam pijar: sekitar 90 dari 100 bagian listrik jadi panas.</li><li>Motor: mesin dan knalpot panas.</li><li>Charger dan laptop: terasa hangat.</li><li>Tubuh saat olahraga: badan hangat dan berkeringat.</li></ul>'],
+['Masalah dan Cara Menguranginya','inf','<ul><li><b>Masalah:</b> boros (tagihan naik), alat cepat rusak, panas sulit dikumpulkan lagi.</li><li><b>Cara:</b> pakai lampu LED, servis motor rutin, jangan menutup charger atau laptop dengan bantal, matikan alat yang tidak dipakai.</li></ul><p>Kalor kadang jadi tujuan (kompor, setrika). Itu bukan hasil sampingan.</p>']]
+];
+
+var QS=[
+{q:'Daeng Naba membakar ikan memakai arang di dekat Pantai Losari. Apa perubahan energi utama pada arang yang terbakar?',o:['Kalor menjadi kimia','Kimia menjadi kalor','Listrik menjadi kalor','Mekanik menjadi kimia'],a:1,h:'Arang adalah bahan simpanan. Apa yang keluar saat terbakar?',e:'Arang menyimpan energi kimia. Saat terbakar, energi kimia berubah menjadi kalor.'},
+{q:'Kamu menggosok kedua telapak tangan dengan cepat karena kedinginan, lalu tangan terasa hangat. Perubahan energinya...',o:['Kalor menjadi mekanik','Kimia menjadi listrik','Mekanik menjadi kalor','Listrik menjadi kalor'],a:2,h:'Gerakan menggosok itu energi apa?',e:'Gerakan tangan (mekanik) berubah menjadi kalor karena gesekan.'},
+{q:'Kipas angin di kelas berputar saat dicolokkan ke listrik PLN. Energi awal dan energi akhir yang dimanfaatkan adalah...',o:['Mekanik lalu listrik','Listrik lalu mekanik','Kimia lalu kalor','Kalor lalu mekanik'],a:1,h:'Yang masuk dari colokan adalah listrik. Baling-baling melakukan apa?',e:'Motor listrik mengubah listrik menjadi mekanik (baling-baling berputar). Kalor ikut muncul sebagai hasil sampingan.'},
+{q:'Bu Guru menyetrika baju di ruang praktik Busana. Bagian setrika yang bertugas mengubah listrik menjadi panas disebut...',o:['Gagang plastik','Kabel penghubung','Elemen pemanas','Tombol suhu'],a:2,h:'Cari alat/proses pengubah, bukan hanya penyalur listrik.',e:'Elemen pemanas mengubah energi listrik menjadi kalor.'},
+{q:'Charger HP-mu terasa hangat saat mengisi baterai. Panas itu sebaiknya disebut...',o:['Energi akhir yang diinginkan','Hasil sampingan','Energi awal','Alat pengubah'],a:1,h:'Tujuan charger bukan memanaskan.',e:'Tujuan charger mengisi baterai. Panasnya muncul tanpa diminta, jadi disebut hasil sampingan.'},
+{q:'Pete-pete melaju memakai bensin. Urutan perubahan energi yang paling tepat adalah...',o:['Mekanik → kimia → kalor','Kalor → listrik → mekanik','Kimia → kalor → mekanik','Listrik → kimia → mekanik'],a:2,h:'Bensin dibakar di mesin dulu, baru roda bergerak.',e:'Bensin (kimia) dibakar jadi kalor, kalor mendorong piston jadi gerak (mekanik).'},
+{q:'Toko menjual dua lampu. Lampu pijar mengubah sekitar 10 dari 100 bagian listrik jadi cahaya, sisanya panas. Kesimpulan yang tepat...',o:['Lampu pijar hemat karena panas berguna','Lampu pijar boros karena kebanyakan jadi kalor sampingan','Energi listrik hilang di lampu','Lampu pijar tidak memakai listrik'],a:1,h:'Berapa bagian yang jadi cahaya (tujuan)?',e:'Kebanyakan listrik jadi kalor sampingan, jadi boros. Energi tidak hilang, hanya berubah jadi panas.'},
+{q:'Temanmu berkata, "Setelah dipakai motor, energi bensin itu habis dan lenyap." Tanggapan yang paling benar...',o:['Benar, energi bisa lenyap','Salah, energi bensin berubah jadi gerak dan kalor','Benar, tetapi hanya energi kimia','Salah, bensin tidak punya energi'],a:1,h:'Ingat aturan: energi tidak hilang.',e:'Energi tidak lenyap. Energi kimia bensin berubah menjadi gerak dan kalor.'},
+{q:'Powerbank dipakai mengisi baterai HP. Rantai energinya...',o:['Kimia → listrik → kimia','Listrik → mekanik → kalor','Kalor → kimia → listrik','Mekanik → listrik → kalor'],a:0,h:'Baterai menyimpan energi jenis apa? Di kabel mengalir apa?',e:'Baterai powerbank (kimia) → arus di kabel (listrik) → baterai HP menyimpan lagi (kimia). Kalor ikut muncul.'},
+{q:'Listrik di sekolah berasal dari PLTU batu bara. Urutan rantai energi dari batu bara sampai listrik adalah...',o:['Kalor → kimia → mekanik → listrik','Kimia → mekanik → kalor → listrik','Mekanik → kimia → listrik → kalor','Kimia → kalor → mekanik → listrik'],a:3,h:'Batu bara dibakar → uap → turbin → generator.',e:'Batu bara (kimia) dibakar jadi kalor, uap memutar turbin (mekanik), generator menghasilkan listrik.'}
+];
+var ALAT=['Setrika listrik','Kipas angin','Rice cooker','Mesin cuci','Pompa air listrik','Powerbank mengisi HP','Lampu emergency','Sepeda motor','Speaker bluetooth','PLTMH/PLTB/panel surya sampai alat di rumah'];
+var F=[
+['alat','Alat yang kamu pilih','sel','Pilih SATU alat dari daftar. Ragu? Pilih alat yang paling sering kamu lihat di rumah atau sekolah. Alat ini juga akan dipakai di prompt komik pada Bagian B.'],
+['awal','Energi awal','','Tulis energi yang MASUK pertama kali ke alat. Sebut bentuknya (mekanik, kimia, listrik, atau kalor) dan sumbernya. Contoh: Listrik dari colokan PLN.'],
+['peng','Alat/proses pengubah','','Tulis bagian alat (atau kejadian) yang bekerja mengubah energi. Contoh: motor listrik di dalam kipas.'],
+['akhir','Energi akhir yang dimanfaatkan','','Tulis bentuk energi hasil yang kita manfaatkan, lalu apa tandanya. Contoh: Mekanik, baling-baling berputar.'],
+['lain','Energi lain yang ikut muncul (kalor/bunyi)','','Tulis energi yang ikut muncul tanpa diminta. Biasanya kalor, kadang bunyi. Tulis juga tandanya. Contoh: Kalor, motor terasa hangat.'],
+['ref','Refleksi: Hari ini aku belajar bahwa ...','','Tulis SATU kalimat tentang hal terpenting yang kamu pelajari hari ini. Mulai dengan: Hari ini aku belajar bahwa ... Pakai kata-katamu sendiri.']];
+var HD={alat:'Bagian A: Tabel Detektif (5 isian)',ref:'Bagian C: Refleksi (1 isian)'};
+var BB='<h3 class="hd">Bagian B: Komik 6 Panel dari AI (upload 1 gambar)</h3><div class="card inf"><p class="ins">Di bagian ini kamu tidak mengetik jawaban. Kamu membuat komik memakai AI, lalu mengupload gambarnya. Ikuti 5 langkah ini:</p><ol class="stp"><li>Pastikan kamu sudah memilih <b>alat</b> di Bagian A. Prompt di bawah otomatis memakai nama alatmu.</li><li>Tekan tombol <b>Salin Prompt</b>.</li><li>Buka aplikasi AI (ChatGPT, Gemini, Claude, atau Dola), <b>tempel prompt</b>, lalu minta AI membuatkan gambar komiknya.</li><li>Periksa hasilnya. Harus <b>1 gambar berisi 6 panel</b> yang menunjukkan energi awal, alat/proses pengubah, energi akhir, dan kalor sampingan. Kalau belum lengkap, minta AI memperbaikinya.</li><li>Simpan gambarnya di HP, kembali ke halaman ini, tekan <b>Pilih Gambar Komik</b>, lalu pastikan pratinjaunya muncul.</li></ol><p class="ins">Catatan: berpindah ke aplikasi AI akan tercatat di laporan sebagai pindah aplikasi. Itu wajar untuk langkah ini.</p></div><div class="card kal"><h3>Prompt untuk AI</h3><div class="ans" id="promptTxt"></div><button class="bgrn" id="bCopy" style="width:100%;margin-top:6px">Salin Prompt</button></div><div class="card mek" id="upBox"><h3>Upload Gambar Komik</h3><p class="ins">Format JPG atau PNG, maksimal 15 MB, hanya 1 gambar. Memilih gambar baru akan mengganti gambar lama.</p><input type="file" id="fImg" accept="image/*"><div class="em" id="e_img"></div><p id="imgInfo" style="font-size:14px;margin:6px 0"></p><img id="imgPrev" class="pimg" alt="Pratinjau komik" style="display:none"></div>';
+
+function build(){
+ var h='<section class="pg" id="p0"><div class="card inf"><h3>Selamat datang, Detektif Energi!</h3><p>Isi identitasmu dulu. Setelah itu kamu akan membaca materi, menjawab cek pemahaman (benar minimal 9 dari 10 soal), lalu mengerjakan Tugas Mandiri.</p>'+
+   '<label class="l" for="i_nama">Nama lengkap</label><p class="ins">Tulis nama lengkapmu sesuai absen.</p><input id="i_nama" data-k="nama" autocomplete="off"><div class="em" id="e_nama">Nama belum diisi.</div>'+
+   '<label class="l" for="i_kelas">Kelas</label><p class="ins">Contoh: X AK 1.</p><input id="i_kelas" data-k="kelas" autocomplete="off"><div class="em" id="e_kelas">Kelas belum diisi.</div>'+
+   '<label class="l" for="i_absen">No. Absen</label><p class="ins">Tulis angka nomor absenmu.</p><input id="i_absen" data-k="absen" inputmode="numeric" autocomplete="off"><div class="em" id="e_absen">No. absen belum diisi.</div></div></section>';
+ MATERI.forEach(function(pg,i){
+  h+='<section class="pg" id="p'+(i+1)+'">';
+  pg.forEach(function(c){h+='<div class="card '+c[1]+'"><h3>'+c[0]+'</h3>'+c[2]+'</div>'});
+  h+='</section>';
+ });
+ h+='<section class="pg" id="p6"><div class="card inf"><h3>Cek Pemahaman</h3><p>10 soal situasi. Kamu harus benar minimal <b>9 soal</b> untuk membuka Tugas Mandiri. Soal yang benar terkunci, soal yang salah dikosongkan dan diberi petunjuk. Kamu boleh kembali membaca materi.</p></div><div id="quiz"></div><button id="bCek" class="bgrn" style="width:100%">Periksa Jawaban</button><div id="qres" style="margin-top:8px;font-weight:700"></div></section>';
+ h+='<section class="pg" id="p7"><div class="card mek"><h3>Tugas Mandiri: Petualangan Si Energi</h3><p>Pilih satu alat, isi Tabel Detektif, buat komik 6 panel memakai AI lalu upload gambarnya, dan tutup dengan satu kalimat refleksi.</p><p><b>Cara mengisi:</b> ada 3 bagian (A: 5 isian teks, B: upload 1 gambar komik, C: 1 refleksi). Baca petunjuk kuning di bawah setiap judul, lalu kerjakan berurutan. Semua bagian wajib diisi. Isian teks ditulis dengan kata-katamu sendiri (tempel teks dinonaktifkan).</p></div>';
+ F.forEach(function(f){
+  if(f[0]==='ref')h+=BB;
+  if(HD[f[0]])h+='<h3 class="hd">'+HD[f[0]]+'</h3>';
+  h+='<label class="l" for="t_'+f[0]+'">'+f[1]+'</label><p class="ins">'+f[3]+'</p>';
+  if(f[2]==='sel')h+='<select id="t_alat" data-t="alat"><option value="">-- pilih alat --</option>'+ALAT.map(function(a){return'<option>'+a+'</option>'}).join('')+'</select>';
+  else h+='<textarea class="ta" id="t_'+f[0]+'" data-t="'+f[0]+'" rows="1"></textarea>';
+  h+='<div class="em" id="e_'+f[0]+'"></div>';
+ });
+ h+='</section><section class="pg" id="p8"><div class="rv" id="rv"></div></section>';
+ $('main').innerHTML=h;
+}
+function promptText(){return 'Buatkan komik 6 panel perubahan energi pada '+(S.tm.alat||'.....')+' dengan beberapa panel menunjukkan:\na. Energi awal\nb. Alat/proses pengubah\nc. Energi akhir yang dimanfaatkan\nd. Energi lain yang ikut muncul: misalnya kalor (badan mesin terasa hangat)'}
+function updPrompt(){var e=$('promptTxt');if(e)e.textContent=promptText()}
+function copyPrompt(){
+ if(!S.tm.alat){toast('Pilih alat dulu di Bagian A.');return}
+ var t=promptText();
+ function fb(){try{var x=document.createElement('textarea');x.value=t;x.style.position='fixed';x.style.opacity='0';document.body.appendChild(x);x.focus();x.select();x.setSelectionRange(0,99999);var ok=document.execCommand('copy');document.body.removeChild(x);toast(ok?'Prompt disalin. Tempel di aplikasi AI.':'Gagal menyalin. Tekan lama teks prompt lalu salin.')}catch(e){toast('Gagal menyalin. Tekan lama teks prompt lalu salin.')}}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){toast('Prompt disalin. Tempel di aplikasi AI.')},fb)}else fb();
+}
+function showImg(){var im=$('imgPrev');if(!im)return;if(S.img){im.src=S.img;im.style.display='block';$('imgInfo').textContent='Gambar terpilih: '+(S.imgName||'komik')+' \u2714'}else{im.removeAttribute('src');im.style.display='none';$('imgInfo').textContent='Belum ada gambar yang dipilih.'}}
+function pickImg(ev){
+ var f=ev.target.files&&ev.target.files[0];if(!f)return;var em=$('e_img');em.classList.remove('s');
+ function bad(t){em.textContent=t;em.classList.add('s')}
+ if(!/^image\//.test(f.type)){bad('File harus berupa gambar (JPG atau PNG).');return}
+ if(f.size>15*1024*1024){bad('Ukuran gambar terlalu besar (maksimal 15 MB).');return}
+ var fr=new FileReader();
+ fr.onerror=function(){bad('Gambar gagal dibaca. Coba pilih lagi.')};
+ fr.onload=function(){var im=new Image();
+  im.onerror=function(){bad('Gambar tidak bisa dibaca. Simpan ulang sebagai JPG atau PNG, lalu coba lagi.')};
+  im.onload=function(){
+   var w=im.naturalWidth,h=im.naturalHeight,k=Math.min(1,1400/Math.max(w,h)),cw=Math.max(1,Math.round(w*k)),ch=Math.max(1,Math.round(h*k)),d;
+   try{var c=document.createElement('canvas');c.width=cw;c.height=ch;var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,cw,ch);x.drawImage(im,0,0,cw,ch);d=c.toDataURL('image/jpeg',0.85)}catch(er){d=fr.result}
+   touch();S.img=d;S.imgName=f.name;$('upBox').classList.remove('err');em.classList.remove('s');showImg();saveDeb();toast('Gambar berhasil diupload.')};
+  im.src=fr.result};
+ fr.readAsDataURL(f);
+}
+function grow(t){t.style.height='auto';t.style.height=(t.scrollHeight+2)+'px'}
+function hydrate(){
+ ['nama','kelas','absen'].forEach(function(k){$('i_'+k).value=S[k]||''});
+ F.forEach(function(f){var e=$('t_'+f[0]);e.value=S.tm[f[0]]||''});
+ updPrompt();showImg();
+}
+function bind(){
+ document.addEventListener('input',function(e){var t=e.target,k=t.getAttribute('data-k'),d=t.getAttribute('data-t');
+  if(k){touch();S[k]=t.value;t.classList.remove('err');$('e_'+k).classList.remove('s');saveDeb()}
+  else if(d){touch();S.tm[d]=t.value;t.classList.remove('err');$('e_'+d).classList.remove('s');if(t.tagName==='TEXTAREA')grow(t);saveDeb()}});
+ document.addEventListener('change',function(e){var t=e.target,d=t.getAttribute('data-t');if(d&&t.tagName==='SELECT'){touch();S.tm[d]=t.value;updPrompt();t.classList.remove('err');$('e_'+d).classList.remove('s');saveDeb()}});
+ ['paste','drop','contextmenu'].forEach(function(ev){document.addEventListener(ev,function(e){if(e.target.classList&&e.target.classList.contains('ta')){e.preventDefault();toast(ev==='contextmenu'?'Klik kanan dinonaktifkan di kolom jawaban.':'Tempel teks dinonaktifkan. Tulis dengan kata-katamu sendiri!')}})});
+ document.addEventListener('visibilitychange',function(){if(document.hidden&&!isResetting&&!printing){S.tabs++;dirty=true;saveNow()}});
+ window.addEventListener('pagehide',function(){if(!isResetting)saveNow()});
+ window.addEventListener('beforeunload',function(){if(!isResetting)saveNow()});
+ window.addEventListener('blur',function(){if(!isResetting)saveNow()});
+ $('bPrev').onclick=function(){touch();closeConfirm();show(Math.max(0,S.page-1));saveDeb()};
+ $('bNext').onclick=next;
+ $('bCek').onclick=cek;$('fImg').onchange=pickImg;$('bCopy').onclick=copyPrompt;
+}
+function closeConfirm(){resetUI(false)}
+function resetUI(ask){var b=$('resetBox');
+ if(!ask){b.innerHTML='<button class="b2" id="rs" style="width:100%">Mulai Ulang</button>';$('rs').onclick=function(){resetUI(true)}}
+ else{b.innerHTML='<div class="card kal"><p><b>Yakin hapus semua jawaban dan hasil kuis?</b> Kamu akan kembali ke halaman materi pertama.</p><div style="display:flex;gap:10px"><button class="bred" id="ry" style="flex:1;min-height:48px">Ya, hapus</button><button class="b2" id="rn" style="flex:1;min-height:48px">Batal</button></div></div>';$('ry').onclick=doReset;$('rn').onclick=function(){resetUI(false)}}}
+function doReset(){
+ isResetting=true;clearTimeout(saveT);clearTimeout(minT);
+ try{localStorage.removeItem(KEY)}catch(e){}
+ S=fresh();dirty=false;try{$('fImg').value=''}catch(e){}hydrate();
+ F.forEach(function(f){var e=$('t_'+f[0]);if(e.tagName==='TEXTAREA')grow(e)});
+ renderQuiz();$('qres').textContent='';$('msg').textContent='';
+ document.querySelectorAll('.err').forEach(function(x){x.classList.remove('err')});
+ document.querySelectorAll('.em').forEach(function(x){x.classList.remove('s')});
+ closeConfirm();show(0);toast('Semua data sudah dihapus.');
+}
+function show(n){
+ S.page=n;clearTimeout(minT);$('msg').textContent='';
+ document.querySelectorAll('.pg').forEach(function(p,i){p.classList.toggle('on',i===n)});
+ $('bar').style.width=((n+1)/TOTAL*100)+'%';$('pg').textContent='Halaman '+(n+1)+' dari '+TOTAL+['• Identitas','• Materi 1','• Materi 2','• Materi 3','• Materi 4','• Materi 5','• Cek Pemahaman','• Tugas Mandiri','• Review'][n].replace(/^/,' ');
+ $('bPrev').style.visibility=n===0?'hidden':'visible';$('bNext').style.display=n===8?'none':'block';
+ window.scrollTo(0,0);
+ if(n>=1&&n<=5){var t=5,b=$('bNext');b.disabled=true;(function tick(){b.textContent='Lanjut ('+t+')';if(t<=0){b.disabled=false;b.textContent='Lanjut ›';return}t--;minT=setTimeout(tick,1000)})()}
+ else{$('bNext').disabled=false;$('bNext').textContent='Lanjut ›'}
+ if(n===7)document.querySelectorAll('.ta').forEach(grow);
+ if(n===8)buildReview();
+}
+function mark(id,txt){var e=$(id);if(e){e.classList.add('err')}var m=$('e_'+id.replace(/^[it]_/,''));if(m){m.textContent=txt;m.classList.add('s')}}
+function next(){
+ touch();closeConfirm();var p=S.page,miss=[];
+ if(p===0){[['nama','Nama'],['kelas','Kelas'],['absen','No. Absen']].forEach(function(x){if(!String(S[x[0]]).trim()){mark('i_'+x[0],x[1]+' belum diisi.');miss.push(x[1])}});
+  if(miss.length){$('msg').textContent='Lengkapi dulu: '+miss.join(', ')+'.';return}}
+ if(p===6&&locked()<9){$('msg').textContent='Belum bisa lanjut. Kamu baru benar '+locked()+' dari 10 soal. Minimal 9 soal harus benar. Perbaiki soal merah atau baca materi lagi.';return}
+ if(p===7){F.forEach(function(f){if(!String(S.tm[f[0]]||'').trim()){mark('t_'+f[0],'Bagian ini belum diisi: '+f[1].split(':')[0]+'.');miss.push(f[1].split(':')[0].split(' (')[0])}});
+  if(!S.img){$('upBox').classList.add('err');$('e_img').textContent='Gambar komik belum diupload. Buat komik dengan AI, lalu pilih gambarnya di sini.';$('e_img').classList.add('s');miss.push('Gambar komik 6 panel (Bagian B)')}
+  if(miss.length){$('msg').textContent='Masih ada '+miss.length+' bagian belum lengkap (bertanda merah): '+miss.join('; ')+'.';var f=document.querySelector('.err');if(f)f.scrollIntoView({block:'center'});return}}
+ show(p+1);saveDeb();
+}
+function locked(){return Object.keys(S.locked).length}
+function renderQuiz(){
+ var h='';QS.forEach(function(q,i){var lk=S.locked[i],wr=S.wrong[i];
+  h+='<div class="q '+(lk?'ok':wr?'bad':'')+'"><p>'+(i+1)+'. '+esc(q.q)+'</p>';
+  q.o.forEach(function(o,j){h+='<label><input type="radio" name="q'+i+'" value="'+j+'" '+(S.ans[i]===j?'checked ':'')+(lk?'disabled':'')+' style="width:auto;margin-right:8px"> '+esc(o)+'</label>'});
+  if(lk)h+='<div style="color:#86efac;font-size:13px">Benar dan terkunci.</div>';
+  if(wr&&!lk)h+='<div class="hint">Belum tepat. Petunjuk: '+esc(q.h)+'</div>';
+  h+='</div>'});
+ $('quiz').innerHTML=h;
+ document.querySelectorAll('#quiz input').forEach(function(r){r.onchange=function(){touch();var i=+r.name.slice(1);S.ans[i]=+r.value;saveDeb()}});
+}
+function cek(){
+ touch();var un=[];QS.forEach(function(q,i){if(!S.locked[i]&&S.ans[i]===undefined)un.push(i+1)});
+ if(un.length){$('qres').style.color='#fda4af';$('qres').textContent='Soal nomor '+un.join(', ')+' belum dijawab.';return}
+ S.att++;QS.forEach(function(q,i){if(S.locked[i])return;if(S.ans[i]===q.a){S.locked[i]=true;delete S.wrong[i]}else{S.wrong[i]=true;delete S.ans[i]}});
+ renderQuiz();var k=locked();
+ $('qres').style.color=k>=9?'#86efac':'#fda4af';
+ $('qres').textContent=k>=9?'Hebat! Benar '+k+' dari 10 (percobaan ke-'+S.att+'). Tugas Mandiri terbuka. Tekan Lanjut.':'Benar '+k+' dari 10 (percobaan ke-'+S.att+'). Minimal 9. Perbaiki soal merah.';
+ saveDeb();
+}
+function clean(s){return String(s).replace(/[\\\/:*?"<>|]/g,'').trim().replace(/\s+/g,'-')||'x'}
+function fname(){return 'TM 4_'+clean(S.nama)+'_'+clean(S.kelas)+'_'+clean(S.absen)}
+function analyse(){
+ var T=S.tm,tot=F.length+1,filled=F.filter(function(f){return String(T[f[0]]||'').trim()}).length+(S.img?1:0),re=/mekanik|kimia|listrik|kalor/i;
+ var c=[['Semua bagian terisi ('+filled+' dari '+tot+')',filled===tot],
+ ['Energi awal dan akhir menyebut bentuk energi (mekanik/kimia/listrik/kalor)',re.test(T.awal||'')&&re.test(T.akhir||'')],
+ ['Kalor/energi lain sebagai hasil sampingan disebut',/kalor|panas|hangat|bunyi/i.test(T.lain||'')],
+ ['Gambar komik 6 panel sudah diupload',!!S.img]];
+ var ok=c.slice(1).filter(function(x){return x[1]}).length;
+ return{c:c,score:Math.round(filled/tot*70+ok/3*30)};
+}
+function buildReview(){
+ var a=analyse(),h='<div class="card inf"><h3>Laporan Pengerjaan</h3><div class="kv"><b>Nama:</b> '+esc(S.nama)+'<br><b>Kelas:</b> '+esc(S.kelas)+' &nbsp; <b>No. Absen:</b> '+esc(S.absen)+'<br><b>Skor Cek Pemahaman:</b> '+locked()+' / 10 (percobaan: '+S.att+')<br><b>Pindah tab/aplikasi:</b> '+S.tabs+' kali</div></div>';
+ h+='<div class="card mek"><h3>Skor Kelengkapan</h3><div class="score">'+a.score+' / 100</div>'+a.c.map(function(x){return'<div class="ck2">'+(x[1]?'✅':'⚠️')+' '+x[0]+'</div>'}).join('')+'<p style="font-size:13px;opacity:.85">Skor ini hanya mengukur kelengkapan. Benar-tidaknya isi jawaban dan gambar komik tetap dinilai manual oleh guru.</p></div>';
+ h+='<h4>Jawaban Tugas Mandiri</h4>';
+ F.forEach(function(f){h+='<div><b style="font-size:13px">'+esc(f[1])+'</b><div class="ans">'+esc(S.tm[f[0]]||'-')+'</div></div>'});
+ h+='<h4>Komik 6 Panel (dibuat dengan AI)</h4>'+(S.img?'<img class="pimg" id="rImg" alt="Komik 6 panel perubahan energi" src="'+S.img+'">':'<div class="ans">Belum ada gambar.</div>');
+ h+='<div class="noprint"><h4>Pembahasan Cek Pemahaman</h4>'+QS.map(function(q,i){return'<div class="card kim"><p><b>'+(i+1)+'. '+esc(q.q)+'</b></p><p>Jawaban: <b>'+esc(q.o[q.a])+'</b></p><p>'+esc(q.e)+'</p></div>'}).join('')+
+ '<div class="card inf"><h3>Pembahasan Tugas</h3><p>Tabel yang baik: energi awal (misal listrik) → alat pengubah (misal motor listrik) → energi akhir (misal mekanik), plus kalor sampingan. Komik harus menunjukkan energi awal, alat/proses pengubah, energi akhir yang dimanfaatkan, dan kalor sampingan.</p></div>'+
+ '<button class="bgrn" id="bPdf" style="width:100%;margin:6px 0">Simpan sebagai PDF</button><button class="bor" id="bTxt" style="width:100%;margin:6px 0">Unduh sebagai .txt (cadangan)</button><p style="font-size:13px">Nama file: '+esc(fname())+'. Di HP, pilih "Simpan sebagai PDF" atau "Cetak" lalu simpan/bagikan. Pastikan gambar komik tampil di pratinjau cetak. Jika gagal, pakai tombol .txt.</p></div>';
+ $('rv').innerHTML=h;
+ $('bPdf').onclick=function(){
+  var im=$('rImg');
+  var go=function(){printing=true;var o=document.title;document.title=fname();try{window.print()}catch(e){toast('Gagal membuka cetak. Pakai tombol .txt.')}setTimeout(function(){document.title=o;printing=false},1500)};
+  if(im&&im.decode){im.decode().then(go,go)}else if(im&&!im.complete){im.onload=go}else go()};
+ $('bTxt').onclick=function(){
+  var a2=analyse(),t='TM 4 - PERUBAHAN ENERGI: PETUALANGAN SI ENERGI\n\nNama: '+S.nama+'\nKelas: '+S.kelas+'\nNo. Absen: '+S.absen+'\nSkor Cek Pemahaman: '+locked()+'/10 (percobaan: '+S.att+')\nPindah tab/aplikasi: '+S.tabs+' kali\nSkor kelengkapan: '+a2.score+'/100 (isi dinilai guru)\n\n== JAWABAN TUGAS MANDIRI ==\n';
+  F.forEach(function(f){t+='\n'+f[1]+'\n'+(S.tm[f[0]]||'-')+'\n'});
+  t+='\nGambar komik 6 panel: '+(S.img?'sudah diupload ('+(S.imgName||'komik')+')':'belum diupload')+'\n\nCATATAN: File .txt hanya berisi jawaban teks. Gambar komik yang diupload hanya tersedia di versi PDF.\n';
+  try{var b=new Blob([t],{type:'text/plain;charset=utf-8'}),u=URL.createObjectURL(b),l=document.createElement('a');l.href=u;l.download=fname()+'.txt';document.body.appendChild(l);l.click();setTimeout(function(){document.body.removeChild(l);URL.revokeObjectURL(u)},1500)}catch(e){toast('Gagal mengunduh .txt di perangkat ini.')}};
+}
+load();build();bind();hydrate();renderQuiz();resetUI(false);
+document.querySelectorAll('.ta').forEach(grow);
+show(Math.min(S.page||0,TOTAL-1));
+})();
+</script></body></html>
